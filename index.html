@@ -6,108 +6,118 @@
 <title>Canım Anneme 🌸</title>
 <style>
 body {
-  margin:0;
-  padding:0;
+  margin:0; padding:0;
   font-family:'Segoe UI', sans-serif;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-  overflow:hidden;
-  text-align:center;
-  background: linear-gradient(270deg, #ff5a7d, #ff9bb3, #ffcce0, #ff5a7d);
-  background-size: 1500% 1500%;
-  animation: bgAnimate 30s ease infinite;
-  color:white;
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  min-height:100vh; overflow:hidden; text-align:center;
+  background: linear-gradient(270deg,#ff5a7d,#ff9bb3,#ffcce0,#ff5a7d);
+  background-size: 1500% 1500%; animation: bgAnimate 25s ease infinite;
+  color:white; position:relative;
 }
 
 /* Mesaj */
 p {
-  font-size:1.8rem;
-  line-height:1.8;
-  margin-bottom:30px;
-  opacity:1; /* Mesaj baştan görünür */
-  position:relative;
-  z-index:2;
-  padding:25px 35px;
-  border-radius:20px;
-  backdrop-filter: blur(10px);
-  background: rgba(0,0,0,0.1);
+  font-size:clamp(1.2rem, 2vw, 2rem);
+  line-height:1.8; margin-bottom:2rem; opacity:1;
+  position:relative; z-index:2; padding:1.5rem 2rem; border-radius:20px;
+  backdrop-filter: blur(12px); background: rgba(0,0,0,0.18);
+  text-shadow: 0 0 20px #ff4d6d;
+  max-width:90%;
 }
 
 /* Buton */
 button {
-  padding:18px 55px;
-  border:none;
-  border-radius:50px;
-  font-size:1.3rem;
-  cursor:pointer;
-  background: linear-gradient(90deg,#ff4d6d,#ff758f);
-  color:white;
-  box-shadow:0 5px 25px rgba(255,77,109,0.5);
-  transition:0.3s;
-  margin-top:20px;
+  padding:1rem 3rem; border:none; border-radius:50px; font-size:1.2rem;
+  cursor:pointer; background: linear-gradient(90deg,#ff4d6d,#ff758f);
+  color:white; box-shadow:0 5px 25px rgba(255,77,109,0.5); transition:0.3s; margin-top:1rem;
 }
-button:hover {
-  transform:scale(1.1);
-  box-shadow:0 8px 35px rgba(255,77,109,0.7);
-}
+button:hover { transform:scale(1.05); box-shadow:0 8px 35px rgba(255,77,109,0.7); }
 
 /* Konfeti */
-.confetti {
-  position:absolute;
-  border-radius:50%;
-  animation: confettiFall 1.8s forwards;
-}
+.confetti { position:absolute; border-radius:50%; animation: confettiFall 2s forwards; }
 
 /* Kalp */
-.heart {
-  position:absolute;
-  transform: rotate(45deg);
-  animation: floatHeart 1.8s forwards;
+.heart { position:absolute; transform: rotate(45deg); animation: floatHeart 2s forwards; }
+.heart::before, .heart::after { content:''; position:absolute; width:14px; height:14px; border-radius:50%; background:red; }
+.heart::before { top:-7px; left:0; } .heart::after { left:7px; top:0; }
+
+/* Çiçekler (CSS çizim + animasyon + 3D ışık ve gölge) */
+.flower {
+  position:absolute; width:100px; height:100px; border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, #ff7eb9, #ffb3d9);
+  box-shadow: inset 0 0 15px rgba(255,255,255,0.7), 0 0 25px rgba(255,182,193,0.7);
+  pointer-events:none;
+  animation: flowerFloat 6s ease-in-out forwards, flowerRotate 5s infinite alternate, flowerPulse 3s infinite alternate;
+  opacity:0.7;
 }
-.heart::before, .heart::after {
-  content:'';
-  position:absolute;
-  width:12px; height:12px;
-  border-radius:50%;
-  background:red;
-}
-.heart::before { top:-6px; left:0; }
-.heart::after { left:6px; top:0; }
 
 /* Animasyonlar */
 @keyframes bgAnimate {
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
+  0%{background-position:0% 50%;} 50%{background-position:100% 50%;} 100%{background-position:0% 50%;}
 }
-@keyframes confettiFall {
-  0% { transform: translateY(0) rotate(0deg); opacity:1; }
-  100% { transform: translateY(120px) rotate(360deg); opacity:0; }
-}
-@keyframes floatHeart {
-  0% { transform: translateY(0) rotate(45deg); opacity:0.9; }
-  50%{ opacity:1; }
-  100% { transform: translateY(-140px) rotate(45deg); opacity:0; }
-}
+@keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity:1; } 100% { transform: translateY(140px) rotate(360deg); opacity:0; } }
+@keyframes floatHeart { 0% { transform: translateY(0) rotate(45deg); opacity:0.9; } 50%{ opacity:1; } 100% { transform: translateY(-160px) rotate(45deg); opacity:0; } }
+@keyframes flowerFloat { 0% { transform: translateY(0) rotate(0deg) scale(0.7); opacity:0; } 10% { opacity:0.7; } 50% { transform: translateY(-30px) rotate(10deg) scale(1); } 90% { opacity:0.7; } 100% { transform: translateY(-60px) rotate(20deg) scale(0.9); opacity:0; } }
+@keyframes flowerRotate { 0%{ transform: rotate(0deg); } 100%{ transform: rotate(360deg); } }
+@keyframes flowerPulse { 0% { box-shadow: inset 0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,182,193,0.5); } 100% { box-shadow: inset 0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(255,182,193,0.8); } }
 
 /* Glow ve pulse mesaj */
-.showMessage {
-  box-shadow: 0 0 25px #ff758f, 0 0 50px #ff4d6d;
-  animation: pulseGlow 1.5s ease-in-out infinite alternate;
-}
-@keyframes pulseGlow {
-  0%{ box-shadow: 0 0 15px #ff758f, 0 0 30px #ff4d6d; }
-  100%{ box-shadow: 0 0 30px #ff758f, 0 0 60px #ff4d6d; }
-}
+.showMessage { box-shadow: 0 0 30px #ff758f, 0 0 60px #ff4d6d; animation: pulseGlow 1.5s ease-in-out infinite alternate; }
+@keyframes pulseGlow { 0%{ box-shadow: 0 0 20px #ff758f, 0 0 40px #ff4d6d; } 100%{ box-shadow: 0 0 40px #ff758f, 0 0 80px #ff4d6d; } }
 </style>
 </head>
 <body>
 
 <p id="message" class="showMessage">Herkes çiçek alır… Ben kodladım.<br>Çiçekler illaki bir gün solar.</p>
+<button id="btn">Mesajı Göster 🎉</button>
 
+<script>
+const maxTrigger = 20; let triggerCount = 0;
+
+document.getElementById('btn').addEventListener('click', () => {
+  if(triggerCount >= maxTrigger) return;
+  triggerCount++;
+
+  const msg = document.getElementById('message');
+
+  // Konfeti
+  for(let i=0;i<60;i++){
+    const c = document.createElement('div');
+    c.className='confetti';
+    c.style.left = (Math.random()*window.innerWidth)+'px';
+    c.style.top = (Math.random()*window.innerHeight/2)+'px';
+    const size = 6 + Math.random()*12;
+    c.style.width = c.style.height = size+'px';
+    c.style.background = `hsl(${Math.random()*360},80%,70%)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),2200);
+  }
+
+  // Kalpler
+  for(let i=0;i<35;i++){
+    const h = document.createElement('div');
+    h.className='heart';
+    h.style.left = (Math.random()*window.innerWidth)+'px';
+    h.style.top = (Math.random()*window.innerHeight)+'px';
+    const size = 10 + Math.random()*18;
+    h.style.width = h.style.height = size+'px';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),2000);
+  }
+
+  // Çiçekler CSS ile ultra profesyonel
+  for(let i=0;i<10;i++){
+    const f = document.createElement('div');
+    f.className='flower';
+    f.style.left = Math.random()*(window.innerWidth-120)+'px';
+    f.style.top = Math.random()*(window.innerHeight-150)+'px';
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),4500);
+  }
+});
+</script>
+</body>
+</html>
 <button id="btn">Mesajı Göster 🎉</button>
 
 <script>
