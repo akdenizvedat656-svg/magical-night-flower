@@ -3,153 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vedat'tan Anneme 🌸</title>
+<title> Anneme 🌸</title>
 <style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
 body {
-  margin:0;
-  padding:0;
-  font-family:'Segoe UI', sans-serif;
+  height:100vh;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  min-height:100vh;
-  background: linear-gradient(160deg,#ff5a7d,#ff9bb3);
   text-align:center;
-  color:white;
   overflow:hidden;
-  position:relative;
+  background: linear-gradient(160deg,#ff5a7d,#ff9bb3);
+  animation: bgShift 25s ease-in-out infinite alternate;
+  color:white;
 }
 
-/* Kalpler arka plan animasyonu */
+/* Başlık */
+h1 {
+  font-size:3rem;
+  margin-bottom:20px;
+  text-shadow: 0 0 20px #ff4d6d, 0 0 40px #ff758f;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+/* Mesaj */
+p {
+  font-size:1.5rem;
+  line-height:1.6;
+  margin-bottom:30px;
+  opacity:0;
+  animation: fadeInText 2s forwards 1s;
+}
+
+/* Buton */
+button {
+  padding:15px 40px;
+  border:none;
+  border-radius:50px;
+  font-size:1.2rem;
+  cursor:pointer;
+  background: #ff4d6d;
+  color:white;
+  box-shadow:0 5px 25px rgba(255,77,109,0.5);
+  transition:0.3s;
+}
+button:hover {
+  transform:scale(1.1);
+  box-shadow:0 8px 35px rgba(255,77,109,0.7);
+  background:#ff758f;
+}
+
+/* Kalpler */
 .heart {
   position:absolute;
-  width:20px; height:20px;
+  width:15px; height:15px;
   background:red;
   transform: rotate(45deg);
   animation: floatHeart linear infinite;
-  opacity:0.8;
+  opacity:0.9;
 }
 .heart::before, .heart::after {
   content:'';
   position:absolute;
-  width:20px; height:20px;
+  width:15px; height:15px;
   background:red;
   border-radius:50%;
 }
-.heart::before { top:-10px; left:0; }
-.heart::after { left:10px; top:0; }
+.heart::before { top:-7.5px; left:0; }
+.heart::after { left:7.5px; top:0; }
 @keyframes floatHeart {
-  0% { transform: translateY(0) rotate(45deg); opacity:0.8;}
-  100% { transform: translateY(-800px) rotate(45deg); opacity:0;}
-}
-
-/* Başlık ve mesaj */
-h1{
-  font-size:3rem;
-  margin-top:40px;
-  text-shadow: 0 0 15px #ff4d6d, 0 0 25px #ff758f;
-}
-p{
-  font-size:1.3rem;
-  margin:20px auto;
-  max-width:400px;
-  line-height:1.5;
-  opacity:0;
-  transition:1s;
-}
-
-/* Buton */
-button{
-  margin-top:20px;
-  padding:14px 30px;
-  border:none;
-  border-radius:40px;
-  background:#ff4d6d;
-  color:white;
-  font-size:1rem;
-  cursor:pointer;
-  transition:0.3s;
-  box-shadow:0 5px 20px rgba(255,77,109,0.4);
-}
-button:hover{
-  background:#ff758f;
-  transform:scale(1.1);
-  box-shadow:0 8px 30px rgba(255,77,109,0.6);
-}
-
-/* Görsel */
-img{
-  width:80%;
-  max-width:500px;
-  margin-top:20px;
-  border-radius:15px;
-  box-shadow: 0 0 25px rgba(255,255,255,0.5);
-  transform: scale(0.9);
-  transition:1s;
+  0% { transform: translateY(0) rotate(45deg); opacity:0.9;}
+  100% { transform: translateY(-1000px) rotate(45deg); opacity:0;}
 }
 
 /* Konfeti */
 .confetti {
   position:absolute;
-  width:10px; height:10px;
-  background: #ff758f;
-  opacity:0.8;
-  top:0; left:50%;
+  width:8px; height:8px;
   border-radius:50%;
+  top:0; left:50%;
   animation: confettiFall linear infinite;
 }
 @keyframes confettiFall {
   0% { transform: translateY(0) translateX(0) rotate(0deg); opacity:1;}
-  100% { transform: translateY(600px) translateX(100px) rotate(360deg); opacity:0;}
+  100% { transform: translateY(800px) translateX(calc(var(--x,0) * 1px)) rotate(360deg); opacity:0;}
 }
+
+/* Animasyonlu çiçekler CSS ile (çoklu) */
+.flower {
+  width:30px; height:30px;
+  position:absolute;
+  top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  animation: spinFlower linear infinite, pulseFlower ease-in-out infinite alternate;
+}
+.flower::before, .flower::after {
+  content:'';
+  position:absolute;
+  width:30px; height:30px;
+  border-radius:50%;
+  background: radial-gradient(circle at center, #ff90b3, #ff5a7d);
+}
+.flower::before { transform: rotate(45deg) translate(20px) rotate(-45deg);}
+.flower::after { transform: rotate(-45deg) translate(20px) rotate(45deg);}
+@keyframes spinFlower { 0%{transform:translate(-50%,-50%) rotate(0deg);} 100%{transform:translate(-50%,-50%) rotate(360deg);} }
+@keyframes pulseFlower { 0%{transform:scale(0.9);} 100%{transform:scale(1.3);} }
+
+/* Animasyonlar */
+@keyframes bgShift {
+  0% { background: linear-gradient(160deg,#ff5a7d,#ff9bb3);}
+  25% { background: linear-gradient(160deg,#ff758f,#ffb3c6);}
+  50% { background: linear-gradient(160deg,#ff9bb3,#ff5a7d);}
+  75% { background: linear-gradient(160deg,#ffb3c6,#ff758f);}
+  100% { background: linear-gradient(160deg,#ff5a7d,#ff9bb3);}
+}
+@keyframes glow {
+  0%{text-shadow: 0 0 20px #ff4d6d,0 0 40px #ff758f;}
+  100%{text-shadow: 0 0 40px #ffb3c6,0 0 80px #ff758f;}
+}
+@keyframes fadeInText { from{opacity:0;} to{opacity:1;} }
 
 </style>
 </head>
 <body>
 
-<h1>🌸Vedat'tan Güzeller Güzeli Annesine 🌸</h1>
-<p id="message">
-  Herkes çiçek alır… Ben kodladım.<br>
-  Çiçekler illaki bir gün solar.
-</p>
+<h1>🌸Güzeller Güzeli Anneme🌸</h1>
+<p id="message">Herkes çiçek alır… Ben kodladım.<br>Çiçekler illaki bir gün solar.</p>
+<button onclick="activateEffects()">Mesajı Göster 🎉</button>
 
-<button onclick="showEffects()">Mesajı Göster & Şarkıyı Çal 🎵</button>
-
-<img src="A_set_of_digital_images_in_a_collage_features_two_.png" alt="Kasımpatı ve Orkide" id="flowerImage">
+<!-- Çoklu çiçek animasyonu -->
+<div class="flower" style="animation-duration:12s; left:30%; top:40%;"></div>
+<div class="flower" style="animation-duration:8s; left:70%; top:60%;"></div>
+<div class="flower" style="animation-duration:15s; left:50%; top:50%;"></div>
 
 <script>
-function showEffects(){
-    // Mesaj görünür
-    const msg = document.getElementById("message");
-    msg.style.opacity="1";
+function activateEffects(){
+  // Mesaj görünür
+  document.getElementById('message').style.opacity='1';
 
-    // Görsel büyüsün
-    const img = document.getElementById("flowerImage");
-    img.style.transform="scale(1)";
+  // Konfeti
+  for(let i=0;i<60;i++){
+    const c = document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'%';
+    c.style.setProperty('--x',(Math.random()*200-100));
+    c.style.background=`hsl(${Math.random()*360},80%,70%)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
 
-    // Konfeti
-    for(let i=0;i<50;i++){
-      const conf = document.createElement('div');
-      conf.classList.add('confetti');
-      conf.style.left=Math.random()*100+'%';
-      conf.style.background=`hsl(${Math.random()*360},80%,70%)`;
-      document.body.appendChild(conf);
-      setTimeout(()=> conf.remove(),4000);
-    }
-
-    // Kalpler
-    for(let i=0;i<30;i++){
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.style.left=Math.random()*100+'%';
-      heart.style.width = heart.style.height = 10 + Math.random()*15 +'px';
-      document.body.appendChild(heart);
-    }
-
-    // Romantik müzik
-    const audio = new Audio('https://assets.mixkit.co/music/preview/mixkit-romantic-piano-401.mp3');
-    audio.play();
+  // Kalpler
+  for(let i=0;i<40;i++){
+    const h = document.createElement('div');
+    h.className='heart';
+    h.style.left=Math.random()*100+'%';
+    h.style.width = h.style.height = 8 + Math.random()*20 +'px';
+    document.body.appendChild(h);
+  }
 }
 </script>
 
