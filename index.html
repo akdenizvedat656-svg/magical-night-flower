@@ -1,74 +1,148 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-public enum GameState { Quiz, Shooting, GameOver }
-
-public class GameManager : MonoBehaviour
-{
-    public static GameManager Instance;
-    public GameState CurrentState = GameState.Quiz;
-
-    [SerializeField] GameObject quizCanvas;
-    [SerializeField] GameObject shooterCanvas; // veya player controller enable/disable
-    [SerializeField] QuestionSO[] questions;
-    private int currentQuestionIndex = 0;
-    public int score = 0;
-    public int lives = 3;
-
-    void Awake() => Instance = this;
-
-    void Start()
-    {
-        ShowQuiz();
-    }
-
-    public void ShowQuiz()
-    {
-        CurrentState = GameState.Quiz;
-        quizCanvas.SetActive(true);
-        // shooterCanvas.SetActive(false); veya PlayerController.enabled = false;
-        DisplayQuestion();
-    }
-
-    void DisplayQuestion()
-    {
-        if (currentQuestionIndex >= questions.Length)
-        {
-            // Tüm sorular bitti → GameOver veya loop
-            CurrentState = GameState.GameOver;
-            return;
-        }
-
-        var q = questions[currentQuestionIndex];
-        // UI'ya soru ve şıkları yaz (TextMeshPro vs.)
-        // QuizU sample'dan UI Toolkit alabilirsin: https://unity.com/demos (QuizU)
-    }
-
-    public void OnAnswerSelected(int selectedIndex)
-    {
-        var correct = questions[currentQuestionIndex].correctAnswerIndex;
-        if (selectedIndex == correct)
-        {
-            score += questions[currentQuestionIndex].points; // 500/1000/5000
-            SpawnEnemy(questions[currentQuestionIndex].points);
-            CurrentState = GameState.Shooting;
-            quizCanvas.SetActive(false);
-            // shooterCanvas.SetActive(true); PlayerController.enabled = true;
-        }
-        else
-        {
-            lives--;
-            if (lives <= 0) CurrentState = GameState.GameOver;
-            else currentQuestionIndex++; // veya tekrar soru
-        }
-    }
-
-    void SpawnEnemy(int value)
-    {
-        // Shooter reposundaki enemy spawn fonksiyonunu çağır
-        // HP = value / 100 gibi ayarla
-        // Öldüğünde → currentQuestionIndex++; ShowQuiz();
-    }
-
-    // Update'de state'e göre input kontrolü vs.
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evet mi Hayır mı?</title>
+<style>
+body {
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+    font-family:Arial, sans-serif;
+    overflow:hidden;
+    text-align:center;
 }
+
+.container h1 {
+    font-size:2rem;
+    color:white;
+}
+
+.buttons {
+    margin-top:30px;
+    position:relative;
+}
+
+button {
+    padding:15px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+#yesBtn {
+    background:#00c853;
+    color:white;
+    transition:0.3s;
+}
+
+#noBtn {
+    background:#d50000;
+    color:white;
+    position:absolute;
+}
+
+.finalScreen {
+    animation:pop 0.6s ease forwards;
+}
+
+@keyframes pop {
+    from {transform:scale(0);}
+    to {transform:scale(1);}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1 id="question">Benimle çıkar mısın? ❤️</h1>
+    <div class="buttons">
+        <button id="yesBtn">Evet</button>
+        <button id="noBtn">Hayır</button>
+    </div>
+</div>
+
+<audio id="popSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const question = document.getElementById("question");
+const sound = document.getElementById("popSound");
+
+let scale = 1;
+let messages = [
+"Emin misin? 🥺",
+"Bir daha düşün...",
+"Bak kalbim kırılıyor 💔",
+"Son kararın mı?",
+"Hadi ama 😭",
+"Kaçamazsın 😈"
+];
+
+let index = 0;
+
+function moveButton() {
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    if(index < messages.length) {
+        question.innerText = messages[index];
+        index++;
+    }
+
+    scale += 0.2;
+    yesBtn.style.transform = "scale(" + scale + ")";
+}
+
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("click", moveButton);
+
+yesBtn.addEventListener("click", () => {
+    sound.play();
+    document.body.innerHTML = `
+        <div class="finalScreen" style="
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+        background:linear-gradient(135deg,#00c853,#b2ff59);
+        font-family:Arial;">
+            <h1 style="font-size:3rem;">Biliyordum 😎❤️</h1>
+            <button onclick="share()" style="
+                padding:15px 30px;
+                margin-top:20px;
+                font-size:18px;
+                border:none;
+                border-radius:10px;
+                background:black;
+                color:white;
+                cursor:pointer;">Arkadaşına Gönder</button>
+        </div>
+    `;
+});
+
+function share() {
+    if (navigator.share) {
+        navigator.share({
+            title: "Evet mi Hayır mı?",
+            text: "Buna basmaya cesaret edebilir misin?",
+            url: window.location.href
+        });
+    } else {
+        alert("Linki kopyalayıp gönder 😉");
+    }
+}
+</script>
+
+</body>
+</html>
